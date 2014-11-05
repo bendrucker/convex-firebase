@@ -49,6 +49,21 @@ module.exports = function () {
         foo: 'bar'
       });
     });
+
+    it('updates data when changed', function () {
+      var child = ref.push({
+        foo: 'bar'
+      });
+      ref.flush();
+      child.update({
+        bar: 'baz'
+      });
+      ref.flush();
+      expect(collection[0]).to.contain({
+        foo: 'bar',
+        bar: 'baz'
+      });
+    });
     
   });
 

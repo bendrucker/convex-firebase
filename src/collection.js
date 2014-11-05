@@ -14,6 +14,10 @@ module.exports = function (ConvexCollection, Firebase) {
       this.$push(snapshot.val());
       this.$$index[snapshot.name()] = index;
     }, this);
+    ref.on('child_changed', function (snapshot) {
+      var index = this.$$index[snapshot.name()];
+      this.$$models[index].$set(snapshot.val());
+    }, this);
 
   };
 
