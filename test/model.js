@@ -27,6 +27,15 @@ module.exports = function () {
       expect(model.$ref().currentPath).to.equal('mock://user/ben');
     });
 
+    it('calls $firebase#path on the model', function () {
+      model.$firebase = {
+        path: function () {
+          return this.$name + '/ben'
+        }
+      };
+      expect(model.$ref().currentPath).to.equal('mock://user/ben');
+    });
+
   });
 
 };
