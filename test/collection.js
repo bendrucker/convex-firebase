@@ -64,6 +64,45 @@ module.exports = function () {
         bar: 'baz'
       });
     });
+
+    it('removes data when removed', function () {
+      var children = [
+        ref.push({
+          foo: 'bar'
+        }),
+        ref.push({
+          bar: 'baz'
+        })
+      ];
+      ref.flush();
+      children[0].remove();
+      ref.flush();
+      expect(collection).to.have.length(1);
+      expect(collection[0]).to.contain({
+        bar: 'baz'
+      });
+    });
+
+    it('updates the indicies when data is removed', function () {
+      var children = [
+        ref.push({
+          foo: 'bar'
+        }),
+        ref.push({
+          bar: 'baz'
+        })
+      ];
+      ref.flush();
+      children[0].remove();
+      ref.flush();
+      children[1].update({
+        index: 'updated'
+      });
+      ref.flush();
+      expect(collection[0]).to.contain({
+        index: 'updated'
+      });
+    });
     
   });
 

@@ -18,7 +18,23 @@ module.exports = function (ConvexCollection, Firebase) {
       var index = this.$$index[snapshot.name()];
       this.$$models[index].$set(snapshot.val());
     }, this);
+    ref.on('child_removed', function (snapshot) {
+      this.$splice(snapshot.name());
+    }, this);
 
+  };
+
+  ConvexCollection.prototype.$splice = function (id) {
+    var index = this.$$index[id];
+    this.$$models.splice(index, 1);
+    Object.keys(this.$$index)
+      .filter(function (id) {
+        return this.$$index[id] > index;
+      }, this)
+      .forEach(function (id) {
+        this.$$index[id] += -1;
+      }, this);
+    this.$$index[id] = void 0;
   };
 
   return ConvexCollection;
