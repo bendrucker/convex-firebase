@@ -4,6 +4,10 @@ var angular = require('angular');
 
 module.exports = function () {
 
+  beforeEach(angular.mock.module(function ($provide) {
+    $provide.value('Firebase', require('mockfirebase').MockFirebase);
+  }));
+
   var Model, model;
   beforeEach(angular.mock.inject(function (ConvexModel) {
     Model = ConvexModel.extend({

@@ -34,7 +34,8 @@
     "karma-coverage": "~0.2.6",
     "karma-mocha": "~0.1.9",
     "karma-phantomjs-launcher": "~0.1.4",
-    "mocha": "^2.0.1"
+    "mocha": "^2.0.1",
+    "mockfirebase": "~0.4.5"
   },
   "dependencies": {
     "browserify": "~6.2.0",

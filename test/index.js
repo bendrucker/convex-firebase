@@ -8,7 +8,7 @@ describe('convex-firebase', function () {
   beforeEach(angular.mock.module(require('../')));
   beforeEach(angular.mock.module(function ($provide) {
     $provide.constant('convexConfig', {
-      firebase: 'mock://firebase'
+      firebase: 'mock://'
     });
   }));
 

@@ -2,7 +2,8 @@
 
 module.exports = function (ConvexModel, Firebase, convexConfig) {
   ConvexModel.prototype.$ref = function () {
-    return new Firebase(convexConfig.firebase + this.$firebase.path.call(this));
+    return new Firebase(convexConfig.firebase)
+      .child(this.$firebase.path.call(this));
   };
   return ConvexModel;
 };
