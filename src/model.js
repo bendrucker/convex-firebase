@@ -7,31 +7,44 @@ module.exports = function (ConvexModel, Firebase, $q, convexConfig) {
       .child(this.$firebase.path.call(this));
   };
 
-  ConvexModel.prototype.$subscribe = function (key, prefix) {
+  function toPromise (ref) {
+    return $q(function (resolve, reject) {
+      ref.once('value', resolve, reject);
+    });
+  }
+
+  ConvexModel.prototype.$subscribe = function (keys, prefix) {
     var self = this;
-    var ref = this.$ref();
-    if (key) {
-      if (!prefix) {
-        prefix = '';
+    var refs;
+    if (keys) {
+      prefix = prefix ? '$$' : '';
+      if (!Array.isArray(keys)) {
+        keys = [keys]
       }
-      else {
-        prefix = '$$';
-      }
-      ref = ref.child(key);
-      ref.on('value', function (snapshot) {
-        this[prefix + key] = snapshot.val();
-      }, this);
+      var parent = this.$ref()
+      refs = keys
+        .map(function (key) {
+          var ref = parent.child(key);
+          ref.on('value', function (snapshot) {
+            this[prefix + key] = snapshot.val();
+          }, this);
+          return ref;
+        }, this);      
     }
     else {
+      var ref = this.$ref();
       ref.on('value', function (snapshot) {
         this.$set(snapshot.val());
       }, this);
+      refs = [ref];
     }
-    return $q(function (resolve, reject) {
-      ref.once('value', function () {
-        resolve(self);
-      }, reject);
-    });
+    var promises = refs.map(function (ref) {
+      return toPromise(ref);
+    }, this);
+    return $q.all(promises)
+      .then(function () {
+        return self;
+      });
   };
 
   return ConvexModel;

@@ -66,8 +66,10 @@ module.exports = function () {
     it('can subscribe to updates on a single key', function () {
       model.$subscribe('foo');
       ref.child('foo').set('bar');
+      ref.child('bar').set('baz');
       ref.flush();
       expect(model.foo).to.equal('bar');
+      expect(model.bar).to.be.undefined;
     });
 
     it('can subscribe to updates on a single key with prefix', function () {
@@ -75,6 +77,15 @@ module.exports = function () {
       ref.child('foo').set('bar');
       ref.flush();
       expect(model.$$foo).to.equal('bar');
+    });
+
+    it('can subscribe to updates on multiple keys', function () {
+      model.$subscribe(['foo', 'bar']);
+      ref.child('foo').set('bar');
+      ref.child('bar').set('baz');
+      ref.flush();
+      expect(model.foo).to.equal('bar');
+      expect(model.bar).to.equal('baz');
     });
 
     it('can subscribe to updates on the whole object', function () {
