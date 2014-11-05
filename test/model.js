@@ -42,7 +42,7 @@ module.exports = function () {
     it('calls $firebase#path on the model', function () {
       model.$firebase = {
         path: function () {
-          return this.$name + '/ben'
+          return this.$name + '/ben';
         }
       };
       expect(model.$ref().currentPath).to.equal('Mock://user/ben');
@@ -79,7 +79,7 @@ module.exports = function () {
       ref.child('bar').set('baz');
       ref.flush();
       expect(model.foo).to.equal('bar');
-      expect(model.bar).to.be.undefined;
+      expect(model.bar).to.equal(undefined);
     });
 
     it('can subscribe to updates on a single key with prefix', function () {

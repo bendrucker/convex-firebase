@@ -20,9 +20,9 @@ module.exports = function (ConvexModel, Firebase, $q, convexConfig) {
     if (keys) {
       prefix = prefix ? '$$' : '';
       if (!Array.isArray(keys)) {
-        keys = [keys]
+        keys = [keys];
       }
-      var parent = this.$ref()
+      var parent = this.$ref();
       refs = keys
         .map(function (key) {
           var ref = parent.child(key);
