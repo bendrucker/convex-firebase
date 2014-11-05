@@ -39,6 +39,16 @@ module.exports = function () {
       expect(model.$ref().currentPath).to.equal('Mock://user/ben');
     });
 
+    it('can generate collection refs', function () {
+      expect(model.$ref(false).currentPath).to.equal('Mock://users');
+      model.$firebase = {
+        path: function (withId) {
+          return withId ? '/users/ben' : '/users';
+        }
+      };
+      expect(model.$ref().currentPath).to.equal('Mock://users');
+    });
+
     it('calls $firebase#path on the model', function () {
       model.$firebase = {
         path: function () {
