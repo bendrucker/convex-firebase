@@ -6,10 +6,11 @@ module.exports = function () {
     $provide.value('Firebase', require('mockfirebase').MockFirebase);
   }));
 
-  var Firebase, $timeout, Collection, Model, model, collection;
+  var Firebase, $timeout, $rootScope, Collection, Model, model, collection;
   beforeEach(angular.mock.inject(function ($injector) {
     Firebase = $injector.get('Firebase');
     $timeout = $injector.get('$timeout');
+    $rootScope = $injector.get('$rootScope');
 
     var ConvexModel = $injector.get('ConvexModel');
     Collection = $injector.get('ConvexCollection');
@@ -44,6 +45,7 @@ module.exports = function () {
         foo: 'bar'
       });
       ref.flush();
+      $rootScope.$digest();
       expect(collection).to.have.length(1);
       expect(collection[0]).to.contain({
         foo: 'bar'
@@ -59,6 +61,7 @@ module.exports = function () {
         bar: 'baz'
       });
       ref.flush();
+      $rootScope.$digest();
       expect(collection[0]).to.contain({
         foo: 'bar',
         bar: 'baz'
@@ -77,6 +80,7 @@ module.exports = function () {
       ref.flush();
       children[0].remove();
       ref.flush();
+      $rootScope.$digest();
       expect(collection).to.have.length(1);
       expect(collection[0]).to.contain({
         bar: 'baz'
@@ -92,13 +96,12 @@ module.exports = function () {
           bar: 'baz'
         })
       ];
-      ref.flush();
       children[0].remove();
-      ref.flush();
       children[1].update({
         index: 'updated'
       });
       ref.flush();
+      $rootScope.$digest();
       expect(collection[0]).to.contain({
         index: 'updated'
       });

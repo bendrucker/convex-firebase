@@ -1,25 +1,35 @@
 'use strict';
 
-module.exports = function (ConvexCollection, Firebase) {
+module.exports = function (ConvexCollection, Firebase, $rootScope) {
 
   ConvexCollection.prototype.$ref = function () {
     return this.$$parent.$ref(false);
   };
 
+  function applyAsync (callback, context) {
+    $rootScope.$applyAsync(angular.bind(context, callback));
+  }
+
   ConvexCollection.prototype.$subscribe = function () {
     this.$$index = {};
     var ref = this.$ref();
     ref.on('child_added', function (snapshot) {
-      var index = this.$$models.length;
-      this.$push(snapshot.val());
-      this.$$index[snapshot.name()] = index;
+      applyAsync(function () {
+        var index = this.$$models.length;
+        this.$push(snapshot.val());
+        this.$$index[snapshot.name()] = index;
+      }, this);
     }, this);
     ref.on('child_changed', function (snapshot) {
-      var index = this.$$index[snapshot.name()];
-      this.$$models[index].$set(snapshot.val());
+      applyAsync(function () {
+        var index = this.$$index[snapshot.name()];
+        this.$$models[index].$set(snapshot.val());
+      }, this);
     }, this);
     ref.on('child_removed', function (snapshot) {
-      this.$splice(snapshot.name());
+      applyAsync(function () {
+        this.$splice(snapshot.name());
+      }, this);
     }, this);
 
   };
@@ -41,4 +51,4 @@ module.exports = function (ConvexCollection, Firebase) {
 
 };
 
-module.exports.$inject = ['$delegate', 'Firebase'];
+module.exports.$inject = ['$delegate', 'Firebase', '$rootScope'];

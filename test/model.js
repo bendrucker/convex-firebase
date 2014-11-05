@@ -8,10 +8,12 @@ module.exports = function () {
     $provide.value('Firebase', require('mockfirebase').MockFirebase);
   }));
 
-  var Firebase, $timeout, Model, model;
-  beforeEach(angular.mock.inject(function (_Firebase_, _$timeout_, ConvexModel) {
-    Firebase = _Firebase_;
-    $timeout = _$timeout_;
+  var Firebase, $timeout, $rootScope, Model, model;
+  beforeEach(angular.mock.inject(function ($injector) {
+    Firebase = $injector.get('Firebase');
+    $timeout = $injector.get('$timeout');
+    $rootScope = $injector.get('$rootScope');
+    var ConvexModel = $injector.get('ConvexModel');
     Model = ConvexModel.extend({
       $name: 'user'
     });
@@ -88,6 +90,7 @@ module.exports = function () {
       ref.child('foo').set('bar');
       ref.child('bar').set('baz');
       ref.flush();
+      $rootScope.$digest();
       expect(model.foo).to.equal('bar');
       expect(model.bar).to.equal(undefined);
     });
@@ -96,6 +99,7 @@ module.exports = function () {
       model.$subscribe('foo', true);
       ref.child('foo').set('bar');
       ref.flush();
+      $rootScope.$digest();
       expect(model.$$foo).to.equal('bar');
     });
 
@@ -104,6 +108,7 @@ module.exports = function () {
       ref.child('foo').set('bar');
       ref.child('bar').set('baz');
       ref.flush();
+      $rootScope.$digest();
       expect(model.foo).to.equal('bar');
       expect(model.bar).to.equal('baz');
     });
@@ -112,6 +117,7 @@ module.exports = function () {
       model.$subscribe();
       ref.child('foo').set('bar');
       ref.flush();
+      $rootScope.$digest();
       expect(model.foo).to.equal('bar');
     });
 

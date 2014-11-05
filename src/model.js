@@ -1,6 +1,8 @@
 'use strict';
 
-module.exports = function (ConvexModel, Firebase, $q, convexConfig) {
+var angular = require('angular');
+
+module.exports = function (ConvexModel, Firebase, $q, $rootScope, convexConfig) {
 
   ConvexModel.prototype.$ref = function (withId) {
     var pathOverride = this.$firebase && this.$firebase.path;
@@ -12,6 +14,10 @@ module.exports = function (ConvexModel, Firebase, $q, convexConfig) {
     return $q(function (resolve, reject) {
       ref.once('value', resolve, reject);
     });
+  }
+
+  function applyAsync (callback, context) {
+    $rootScope.$applyAsync(angular.bind(context, callback));
   }
 
   ConvexModel.prototype.$subscribe = function (keys, prefix) {
@@ -27,7 +33,9 @@ module.exports = function (ConvexModel, Firebase, $q, convexConfig) {
         .map(function (key) {
           var ref = parent.child(key);
           ref.on('value', function (snapshot) {
-            this[prefix + key] = snapshot.val();
+            applyAsync(function () {
+              this[prefix + key] = snapshot.val();
+            }, this);
           }, this);
           return ref;
         }, this);      
@@ -35,7 +43,9 @@ module.exports = function (ConvexModel, Firebase, $q, convexConfig) {
     else {
       var ref = this.$ref();
       ref.on('value', function (snapshot) {
-        this.$set(snapshot.val());
+        applyAsync(function () {
+          this.$set(snapshot.val());
+        }, this);
       }, this);
       refs = [ref];
     }
@@ -51,4 +61,10 @@ module.exports = function (ConvexModel, Firebase, $q, convexConfig) {
   return ConvexModel;
 };
 
-module.exports.$inject = ['$delegate', 'Firebase', '$q', 'convexConfig'];
+module.exports.$inject = [
+  '$delegate',
+  'Firebase',
+  '$q',
+  '$rootScope',
+  'convexConfig'
+];
