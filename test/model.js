@@ -48,42 +48,40 @@ module.exports = function () {
       sinon.stub(model, '$ref').returns(ref);
     });
 
-    describe('scoped', function () {
-
-      it('can subscribe to updates on a single key', function () {
-        model.$subscribe('foo');
-        ref.child('foo').set('bar');
-        ref.flush();
-        expect(model.foo).to.equal('bar');
-      });
-
-      it('can subscribe to updates on a single key with prefix', function () {
-        model.$subscribe('foo', true);
-        ref.child('foo').set('bar');
-        ref.flush();
-        expect(model.$$foo).to.equal('bar');
-      });
-
-      it('resolves the model when data first arrives', function () {
-        expect(model.$subscribe('foo')).to.eventually.equal(model);
-        ref.child('foo').set('bar');
-        ref.flush();
-        $timeout.flush();
-      });
-
-      it('rejects when data cannot be fetched', function () {
-        var err = new Error();
-        ref.child('foo').failNext('once', err);
-        expect(model.$subscribe('foo')).to.be.rejectedWith(err);
-        ref.child('foo').set('bar');
-        ref.flush();
-        $timeout.flush();
-      });
-
+    it('resolves the model when data first arrives', function () {
+      expect(model.$subscribe()).to.eventually.equal(model);
+      ref.child('foo').set('bar');
+      ref.flush();
+      $timeout.flush();
     });
 
-    describe('whole object', function () {
+    it('rejects when data cannot be fetched', function () {
+      var err = new Error();
+      ref.failNext('once', err);
+      expect(model.$subscribe()).to.be.rejectedWith(err);
+      ref.flush();
+      $timeout.flush();
+    });
 
+    it('can subscribe to updates on a single key', function () {
+      model.$subscribe('foo');
+      ref.child('foo').set('bar');
+      ref.flush();
+      expect(model.foo).to.equal('bar');
+    });
+
+    it('can subscribe to updates on a single key with prefix', function () {
+      model.$subscribe('foo', true);
+      ref.child('foo').set('bar');
+      ref.flush();
+      expect(model.$$foo).to.equal('bar');
+    });
+
+    it('can subscribe to updates on the whole object', function () {
+      model.$subscribe();
+      ref.child('foo').set('bar');
+      ref.flush();
+      expect(model.foo).to.equal('bar');
     });
 
   });
