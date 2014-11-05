@@ -11,7 +11,7 @@ describe('convex-firebase', function () {
     expect(Firebase).to.equal(require('firebase'));
   }));
 
-  // describe('ConvexModel', require('./model'));
-  // describe('ConvexCollection', require('./collection'));
+  describe('ConvexModel', require('./model'));
+  describe('ConvexCollection', require('./collection'));
 
 });
