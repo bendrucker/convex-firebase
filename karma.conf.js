@@ -8,6 +8,8 @@ module.exports = function(config) {
     files: [
       './node_modules/angular/angular.js',
       './node_modules/angular-mocks/angular-mocks.js',
+      './node_modules/chai-as-promised/lib/chai-as-promised.js',
+      './node_modules/es5-shim/es5-shim.js',
       './test/index.js'
     ],
     preprocessors: {

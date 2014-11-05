@@ -8,9 +8,10 @@ module.exports = function () {
     $provide.value('Firebase', require('mockfirebase').MockFirebase);
   }));
 
-  var Firebase, Model, model;
-  beforeEach(angular.mock.inject(function (_Firebase_, ConvexModel) {
+  var Firebase, $timeout, Model, model;
+  beforeEach(angular.mock.inject(function (_Firebase_, _$timeout_, ConvexModel) {
     Firebase = _Firebase_;
+    $timeout = _$timeout_;
     Model = ConvexModel.extend({
       $name: 'user'
     });
@@ -44,12 +45,39 @@ module.exports = function () {
     var ref;
     beforeEach(function () {
       ref = new Firebase();
+      sinon.stub(model, '$ref').returns(ref);
     });
 
     describe('scoped', function () {
 
       it('can subscribe to updates on a single key', function () {
-        // model.
+        model.$subscribe('foo');
+        ref.child('foo').set('bar');
+        ref.flush();
+        expect(model.foo).to.equal('bar');
+      });
+
+      it('can subscribe to updates on a single key with prefix', function () {
+        model.$subscribe('foo', true);
+        ref.child('foo').set('bar');
+        ref.flush();
+        expect(model.$$foo).to.equal('bar');
+      });
+
+      it('resolves the model when data first arrives', function () {
+        expect(model.$subscribe('foo')).to.eventually.equal(model);
+        ref.child('foo').set('bar');
+        ref.flush();
+        $timeout.flush();
+      });
+
+      it('rejects when data cannot be fetched', function () {
+        var err = new Error();
+        ref.child('foo').failNext('once', err);
+        expect(model.$subscribe('foo')).to.be.rejectedWith(err);
+        ref.child('foo').set('bar');
+        ref.flush();
+        $timeout.flush();
       });
 
     });
