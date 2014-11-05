@@ -8,8 +8,9 @@ module.exports = function () {
     $provide.value('Firebase', require('mockfirebase').MockFirebase);
   }));
 
-  var Model, model;
-  beforeEach(angular.mock.inject(function (ConvexModel) {
+  var Firebase, Model, model;
+  beforeEach(angular.mock.inject(function (_Firebase_, ConvexModel) {
+    Firebase = _Firebase_;
     Model = ConvexModel.extend({
       $name: 'user'
     });
@@ -24,7 +25,7 @@ module.exports = function () {
           return '/user/ben';
         }
       };
-      expect(model.$ref().currentPath).to.equal('mock://user/ben');
+      expect(model.$ref().currentPath).to.equal('Mock://user/ben');
     });
 
     it('calls $firebase#path on the model', function () {
@@ -33,7 +34,28 @@ module.exports = function () {
           return this.$name + '/ben'
         }
       };
-      expect(model.$ref().currentPath).to.equal('mock://user/ben');
+      expect(model.$ref().currentPath).to.equal('Mock://user/ben');
+    });
+
+  });
+
+  describe('#$subscribe', function () {
+
+    var ref;
+    beforeEach(function () {
+      ref = new Firebase();
+    });
+
+    describe('scoped', function () {
+
+      it('can subscribe to updates on a single key', function () {
+        // model.
+      });
+
+    });
+
+    describe('whole object', function () {
+
     });
 
   });
