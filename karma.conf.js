@@ -4,12 +4,14 @@ var CI = process.env.CI;
 
 module.exports = function(config) {
   config.set({
-    frameworks: ['mocha', 'browserify'],
+    frameworks: ['mocha', 'chai', 'browserify'],
     files: [
-      './test/**/*.js'
+      './node_modules/angular/angular.js',
+      './node_modules/angular-mocks/angular-mocks.js',
+      './test/index.js'
     ],
     preprocessors: {
-      './test/**/*.js': ['browserify']
+      './test/index.js': ['browserify']
     },
     reporters: CI ? ['progress', 'coverage'] : ['progress'],
     autoWatch: true,
