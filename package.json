@@ -27,7 +27,6 @@
     "browserify-istanbul": "~0.1.2",
     "chai": "^1.9.2",
     "convex": "~2.1.1",
-    "firebase": "~2.0.1",
     "karma": "~0.12.24",
     "karma-bro": "~0.10.0",
     "karma-chai": "~0.1.0",
@@ -39,7 +38,8 @@
   },
   "dependencies": {
     "browserify": "~6.2.0",
-    "browserify-shim": "~3.8.0"
+    "browserify-shim": "~3.8.0",
+    "firebase": "~2.0.1"
   },
   "peerDependencies": {
     "convex": "^2.1.1"
