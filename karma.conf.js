@@ -4,7 +4,7 @@ var CI = process.env.CI;
 
 module.exports = function(config) {
   config.set({
-    frameworks: ['mocha', 'chai', 'browserify'],
+    frameworks: ['mocha', 'chai-sinon', 'browserify'],
     files: [
       './node_modules/angular/angular.js',
       './node_modules/angular-mocks/angular-mocks.js',
