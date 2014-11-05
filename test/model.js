@@ -20,7 +20,17 @@ module.exports = function () {
 
   describe('#$ref', function () {
 
-    it('can generate a new Firebase reference', function () {
+    it('can generate a reference using $path', function () {
+      model.$path = function () {
+        return '/user/ben';
+      };
+      expect(model.$ref().currentPath).to.equal('Mock://user/ben');
+    });
+
+    it('can generate a reference using a firebase path override', function () {
+      model.$path = function () {
+        return '$path';
+      };
       model.$firebase = {
         path: function () {
           return '/user/ben';

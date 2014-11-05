@@ -3,8 +3,9 @@
 module.exports = function (ConvexModel, Firebase, $q, convexConfig) {
 
   ConvexModel.prototype.$ref = function () {
+    var pathOverride = this.$firebase && this.$firebase.path;
     return new Firebase(convexConfig.firebase)
-      .child(this.$firebase.path.call(this));
+      .child(pathOverride ? this.$firebase.path.call(this) : this.$path(this.id));
   };
 
   function toPromise (ref) {
