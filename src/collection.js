@@ -4,4 +4,4 @@ module.exports = function (ConvexCollection, Firebase) {
 
 };
 
-module.exports.$inject = ['ConvexCollection', 'Firebase'];
+module.exports.$inject = ['$delegate', 'Firebase'];

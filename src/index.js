@@ -5,7 +5,9 @@ require('angular')
     'convex'
   ])
   .value('Firebase', require('firebase'))
-  .run(require('./model'))
-  .run(require('./collection'));
+  .config(['$provide', function ($provide) {
+    $provide.decorator('ConvexModel', require('./model'))
+    $provide.decorator('ConvexCollection', require('./collection'));
+  }]);  
 
 module.exports = 'convex-firebase';
