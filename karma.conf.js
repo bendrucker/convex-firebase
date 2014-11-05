@@ -13,6 +13,10 @@ module.exports = function(config) {
     preprocessors: {
       './test/index.js': ['browserify']
     },
+    browserify: {
+      debug: true,
+      transform: CI ? ['browserify-istanbul', 'browserify-shim'] : ['browserify-shim']
+    },
     reporters: CI ? ['progress', 'coverage'] : ['progress'],
     autoWatch: true,
     browsers: ['PhantomJS'],
