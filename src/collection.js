@@ -1,7 +1,7 @@
 'use strict';
 
-module.exports = function (ConvexCollection) {
+module.exports = function (ConvexCollection, Firebase) {
 
 };
 
-module.exports.$inject = ['ConvexCollection'];
+module.exports.$inject = ['ConvexCollection', 'Firebase'];
