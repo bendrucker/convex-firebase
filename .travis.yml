@@ -10,3 +10,9 @@ deploy:
     tags: true
     repo: bendrucker/convex-firebase
     all_branches: true
+after_success:
+- npm install -g codeclimate-test-reporter
+- codeclimate < ./coverage/lcov.info
+env:
+  global:
+    secure: BtwYpSRoOKyG+s3rYeRKhnLyVswnoNjW/6KjbQ+d1Qnq7NM+eILcUn0g8LqoAlPKAFxViZ82+1Cl3VEk1LK+VhFT9vB2wUGkCGs+JM4nbnh42iiJC39j4r8KH4D17c8wwfU4qUY+yIpNIf3O5rZKxG74SnNqoFIs4Crnhx+qtGU=
