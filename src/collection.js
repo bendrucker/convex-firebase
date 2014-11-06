@@ -1,5 +1,7 @@
 'use strict';
 
+var angular = require('angular');
+
 module.exports = function (ConvexCollection, Firebase, $rootScope) {
 
   ConvexCollection.prototype.$ref = function () {
