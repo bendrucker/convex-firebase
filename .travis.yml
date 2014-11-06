@@ -1,0 +1,12 @@
+language: node_js
+node_js:
+- '0.10'
+deploy:
+  provider: npm
+  email: bvdrucker@gmail.com
+  api_key:
+    secure: CZJWHAoLb7HBw/myKCvg7tUuW/B6skfEX30KAJnVAeGtP7YdW4s8sEwYUqR1Rz7HKJQz1r2yB/8xoBOeAAARZ4eUYRTYJ8LHOf15voajk/v+31OsUDxs80zpUzPxWHoSECgXdqxZ/yIwoTW3Hq8ou8u4d8g4BdqbvSsf6r0Mpew=
+  on:
+    tags: true
+    repo: bendrucker/convex-firebase
+    all_branches: true
