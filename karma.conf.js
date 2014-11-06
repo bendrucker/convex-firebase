@@ -20,6 +20,11 @@ module.exports = function(config) {
       transform: CI ? ['browserify-istanbul', 'browserify-shim'] : ['browserify-shim']
     },
     reporters: CI ? ['progress', 'coverage'] : ['progress'],
+    coverageReporter: {
+      type: 'html',
+      dir: './coverage',
+      subdir: './'
+    },
     autoWatch: true,
     browsers: ['PhantomJS'],
     singleRun: false
