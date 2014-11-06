@@ -21,7 +21,7 @@ module.exports = function(config) {
     },
     reporters: CI ? ['progress', 'coverage'] : ['progress'],
     coverageReporter: {
-      type: 'html',
+      type: 'lcov',
       dir: './coverage',
       subdir: './'
     },
