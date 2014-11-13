@@ -27,7 +27,7 @@
     "browserify-istanbul": "~0.1.2",
     "chai": "^1.9.2",
     "chai-as-promised": "~4.1.1",
-    "convex": "~3.0.0-0",
+    "convex": "~3.3.0",
     "es5-shim": "~4.0.3",
     "karma": "~0.12.24",
     "karma-bro": "~0.10.0",
@@ -48,7 +48,7 @@
     "firebase": "~2.0.1"
   },
   "peerDependencies": {
-    "convex": "^3.0.0"
+    "convex": "^3.3.0"
   },
   "browserify": {
     "transform": [

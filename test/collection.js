@@ -23,10 +23,21 @@ module.exports = function () {
 
   describe('#$ref', function () {
 
-    it('can get a reference from its parent model', function () {
-      collection.$relate('user', model);
+    it('can get a reference from its model', function () {
       expect(collection.$ref().currentPath).to.equal('Mock://users');
-    }); 
+    });
+
+    it('can passes itself to model#$ref', function () {
+      collection.$related('owner', {
+        id: 'theOwner'
+      });
+      Model.prototype.$firebase = {
+        path: function (withId, collection) {
+          return '/owners/' + collection.$related('owner').id + '/models'
+        }
+      }
+      expect(collection.$ref().currentPath).to.equal('Mock://owners/theOwner/models');
+    });
 
   });
 

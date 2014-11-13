@@ -5,7 +5,7 @@ var angular = require('angular');
 module.exports = function (ConvexCollection, Firebase, $rootScope) {
 
   ConvexCollection.prototype.$ref = function () {
-    return this.$$parent.$ref(false);
+    return this.$$model.prototype.$ref(false, this);
   };
 
   function applyAsync (callback, context) {

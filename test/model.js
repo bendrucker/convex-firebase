@@ -41,7 +41,7 @@ module.exports = function () {
       expect(model.$ref().currentPath).to.equal('Mock://user/ben');
     });
 
-    it('can generate collection refs', function () {
+    it('can generate root collection refs', function () {
       expect(model.$ref(false).currentPath).to.equal('Mock://users');
       model.$firebase = {
         path: function (withId) {
@@ -58,6 +58,15 @@ module.exports = function () {
         }
       };
       expect(model.$ref().currentPath).to.equal('Mock://user/ben');
+    });
+
+    it('calls $firebase#path with a collection if provided', function () {
+      model.$firebase = {
+        path: function (withId, collection) {
+          return collection.myPath;
+        }
+      };
+      expect(model.$ref(false, {myPath: 'bar'}).currentPath).to.equal('Mock://bar');
     });
 
   });
