@@ -19,18 +19,18 @@ module.exports = function (ConvexCollection, Firebase, $rootScope) {
       applyAsync(function () {
         var index = this.$$models.length;
         this.$push(snapshot.val());
-        this.$$index[snapshot.name()] = index;
+        this.$$index[snapshot.key()] = index;
       }, this);
     }, this);
     ref.on('child_changed', function (snapshot) {
       applyAsync(function () {
-        var index = this.$$index[snapshot.name()];
+        var index = this.$$index[snapshot.key()];
         this.$$models[index].$set(snapshot.val());
       }, this);
     }, this);
     ref.on('child_removed', function (snapshot) {
       applyAsync(function () {
-        this.$splice(snapshot.name());
+        this.$splice(snapshot.key());
       }, this);
     }, this);
 
