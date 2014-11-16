@@ -5,19 +5,23 @@ var angular = require('angular');
 module.exports = function (ConvexCollection, Firebase, $rootScope) {
 
   ConvexCollection.prototype.$ref = function () {
+    if (this.$$ref) return this.$$ref;
     var proto = this.$$model.prototype;
-    var ref = proto.$ref(false, this);
-    if (proto.$firebase && proto.$firebase.query) {
-      var query = proto.$firebase.query;
-      if (typeof query === 'function') {
-        ref = query.call(this, ref);
-      }
-      else {
-        Object.keys(query).forEach(function (method) {
-          var args = Array.isArray(query[method]) ? query[method] : [query[method]];
-          ref = ref[method].apply(ref, args);
-        });
-      }
+    this.$$ref = proto.$ref(false, this);
+    if (proto.$firebase) this.$$ref = this.$query(proto.$firebase.query);      
+    return this.$$ref;
+  };
+
+  ConvexCollection.prototype.$query = function (query) {
+    var ref = this.$ref();
+    if (typeof query === 'function') {
+      return query.call(this, ref);
+    }
+    else if (query) {
+      Object.keys(query).forEach(function (method) {
+        var args = Array.isArray(query[method]) ? query[method] : [query[method]];
+        ref = ref[method].apply(ref, args);
+      });
     }
     return ref;
   };
@@ -26,9 +30,10 @@ module.exports = function (ConvexCollection, Firebase, $rootScope) {
     $rootScope.$applyAsync(angular.bind(context, callback));
   }
 
-  ConvexCollection.prototype.$subscribe = function () {
+  ConvexCollection.prototype.$subscribe = function (options) {
+    options = options || {};
     this.$$index = {};
-    var ref = this.$ref();
+    var ref = this.$query(options.query);
     ref.on('child_added', function (snapshot) {
       applyAsync(function () {
         var index = this.$$models.length;
