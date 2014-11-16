@@ -39,6 +39,50 @@ module.exports = function () {
       expect(collection.$ref().currentPath).to.equal('Mock://owners/theOwner/models');
     });
 
+    describe('query', function () {
+
+      var ref, query;
+      beforeEach(function () {
+        ref = new Firebase();
+        sinon.stub(Model.prototype, '$ref').returns(ref);
+        query = {};
+      });
+
+      it('can apply a one argument query', function () {
+        Model.prototype.$firebase = {
+          query: {
+            limitToLast: 5
+          }
+        };
+        ref.limitToLast = sinon.stub().returns(query);
+        expect(collection.$ref()).to.equal(query);
+        expect(ref.limitToLast).to.have.been.calledWith(5);
+      });
+
+      it('can apply a multi argument query', function () {
+        Model.prototype.$firebase = {
+          query: {
+            startAt: [5, 'key']
+          }
+        };
+        ref.startAt = sinon.stub().returns(query);
+        expect(collection.$ref()).to.equal(query);
+        expect(ref.startAt).to.have.been.calledWith(5, 'key');
+      });
+
+      it('can call a query function', function () {
+        var queryFn = sinon.stub().returns(query);
+        Model.prototype.$firebase = {
+          query: queryFn
+        };
+        expect(collection.$ref()).to.equal(query);
+        expect(queryFn)
+          .to.have.been.calledWith(ref)
+          .and.calledOn(sinon.match.has('$$models', collection));
+      });
+
+    });
+
   });
 
   describe('#$subscribe', function () {
