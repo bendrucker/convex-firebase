@@ -1,5 +1,7 @@
 'use strict';
 
+var angular = require('angular');
+
 module.exports = function () {
 
   beforeEach(angular.mock.module(function ($provide) {
@@ -33,9 +35,9 @@ module.exports = function () {
       });
       Model.prototype.$firebase = {
         path: function (withId, collection) {
-          return '/owners/' + collection.$related('owner').id + '/models'
+          return '/owners/' + collection.$related('owner').id + '/models';
         }
-      }
+      };
       expect(collection.$ref().currentPath).to.equal('Mock://owners/theOwner/models');
     });
 
