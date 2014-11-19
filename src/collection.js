@@ -19,8 +19,16 @@ module.exports = function (ConvexCollection, Firebase, $rootScope) {
     }
     else if (query) {
       Object.keys(query).forEach(function (method) {
-        var args = Array.isArray(query[method]) ? query[method] : [query[method]];
-        ref = ref[method].apply(ref, args);
+        var args = query[method];
+        if (Array.isArray(args)) {
+          ref = ref[method].apply(ref, args);
+        }
+        else if (args) {
+          ref = ref[method].call(ref, args);
+        }
+        else {
+          ref = ref[method]();
+        }
       });
     }
     return ref;

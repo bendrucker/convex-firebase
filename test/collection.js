@@ -63,6 +63,17 @@ module.exports = function () {
       expect(ref.limitToLast).to.have.been.calledWith(5);
     });
 
+    it('can apply no argument query', function () {
+      Model.prototype.$firebase = {
+        query: {
+          orderByPriority: void 0
+        }
+      };
+      ref.orderByPriority = sinon.stub().returns(query);
+      expect(collection.$query()).to.equal(query);
+      expect(ref.orderByPriority.firstCall.args).to.have.length(0);
+    });
+
     it('can apply a multi argument query', function () {
       Model.prototype.$firebase = {
         query: {
