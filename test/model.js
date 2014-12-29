@@ -42,13 +42,13 @@ module.exports = function () {
     });
 
     it('can generate root collection refs', function () {
-      expect(model.$ref(false).currentPath).to.equal('Mock://users');
+      expect(model.$ref(true).currentPath).to.equal('Mock://users');
       model.$firebase = {
-        path: function (withId) {
-          return withId ? '/users/ben' : '/users';
+        path: function (collection) {
+          return !collection ? '/users/ben' : '/users';
         }
       };
-      expect(model.$ref().currentPath).to.equal('Mock://users');
+      expect(model.$ref(true).currentPath).to.equal('Mock://users');
     });
 
     it('calls $firebase#path on the model', function () {
@@ -62,11 +62,11 @@ module.exports = function () {
 
     it('calls $firebase#path with a collection if provided', function () {
       model.$firebase = {
-        path: function (withId, collection) {
+        path: function (collection) {
           return collection.myPath;
         }
       };
-      expect(model.$ref(false, {myPath: 'bar'}).currentPath).to.equal('Mock://bar');
+      expect(model.$ref({myPath: 'bar'}).currentPath).to.equal('Mock://bar');
     });
 
   });

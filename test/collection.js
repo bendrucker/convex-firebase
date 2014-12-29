@@ -34,7 +34,7 @@ module.exports = function () {
         id: 'theOwner'
       });
       Model.prototype.$firebase = {
-        path: function (withId, collection) {
+        path: function (collection) {
           return '/owners/' + collection.$related('owner').id + '/models';
         }
       };
