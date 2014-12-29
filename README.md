@@ -47,11 +47,11 @@ app
       id: 123
     });
     assert.equal(
-      book.$ref().path,
+      book.$ref().toString(),
       'https://example.firebaseio.com/books/123'
     );
     assert.equal(
-      book.$ref(true).path,
+      book.$ref(true).toString(),
       'https://example.firebaseio.com/books'
     );
   });
@@ -86,11 +86,11 @@ app
       }
     });
     assert.equal(
-      book.$ref().path,
+      book.$ref().toString(),
       'https://example.firebaseio.com/authors/456/books/123'
     );
     assert.equal(
-      book.$ref(true).path,
+      book.$ref(true).toString(),
       'https://example.firebaseio.com/authors/456/books'
     );
   });
