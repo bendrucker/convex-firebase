@@ -7,7 +7,7 @@ module.exports = function (ConvexCollection, Firebase, $rootScope) {
   ConvexCollection.prototype.$ref = function () {
     if (this.$$ref) return this.$$ref;
     var proto = this.$$model.prototype;
-    this.$$ref = proto.$ref(false, this);
+    this.$$ref = proto.$ref(this);
     if (proto.$firebase) this.$$ref = this.$query(proto.$firebase.query);      
     return this.$$ref;
   };
